@@ -1,0 +1,16 @@
+[2025-07-30 18:44:20,058]  14 root - INFO - Initiate the data ingestion
+[2025-07-30 18:44:26,905]  58 root - INFO - Performed train test split on dataframe
+[2025-07-30 18:44:26,905]  63 root - INFO - Exporting test and train file path
+[2025-07-30 18:44:26,951]  68 root - INFO - Exported train and test file path
+[2025-07-30 18:44:26,953]  16 root - INFO - Data ingestion completed
+[2025-07-30 18:44:27,070]  31 root - INFO - Required number of columns :31
+[2025-07-30 18:44:27,071]  32 root - INFO - Data frame have columns :31
+[2025-07-30 18:44:27,071]  31 root - INFO - Required number of columns :31
+[2025-07-30 18:44:27,071]  32 root - INFO - Data frame have columns :31
+[2025-07-30 18:44:27,071]  45 root - INFO - Required numerical columns :['having_IP_Address', 'URL_Length', 'Shortining_Service', 'having_At_Symbol', 'double_slash_redirecting', 'Prefix_Suffix', 'having_Sub_Domain', 'SSLfinal_State', 'Domain_registeration_length', 'Favicon', 'port', 'HTTPS_token', 'Request_URL', 'URL_of_Anchor', 'Links_in_tags', 'SFH', 'Submitting_to_email', 'Abnormal_URL', 'Redirect', 'on_mouseover', 'RightClick', 'popUpWidnow', 'Iframe', 'age_of_domain', 'DNSRecord', 'web_traffic', 'Page_Rank', 'Google_Index', 'Links_pointing_to_page', 'Statistical_report', 'Result']
+[2025-07-30 18:44:27,072]  46 root - INFO - Data frame have numeric columns:31
+[2025-07-30 18:44:27,072]  56 root - INFO - No missing numeric columns are there
+[2025-07-30 18:44:27,072]  45 root - INFO - Required numerical columns :['having_IP_Address', 'URL_Length', 'Shortining_Service', 'having_At_Symbol', 'double_slash_redirecting', 'Prefix_Suffix', 'having_Sub_Domain', 'SSLfinal_State', 'Domain_registeration_length', 'Favicon', 'port', 'HTTPS_token', 'Request_URL', 'URL_of_Anchor', 'Links_in_tags', 'SFH', 'Submitting_to_email', 'Abnormal_URL', 'Redirect', 'on_mouseover', 'RightClick', 'popUpWidnow', 'Iframe', 'age_of_domain', 'DNSRecord', 'web_traffic', 'Page_Rank', 'Google_Index', 'Links_pointing_to_page', 'Statistical_report', 'Result']
+[2025-07-30 18:44:27,072]  46 root - INFO - Data frame have numeric columns:31
+[2025-07-30 18:44:27,072]  56 root - INFO - No missing numeric columns are there
+[2025-07-30 18:44:27,179]  21 root - INFO - Data validation conifg
