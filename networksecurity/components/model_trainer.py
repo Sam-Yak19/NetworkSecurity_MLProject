@@ -2,6 +2,7 @@ import os
 import sys
 import numpy as np
 import pandas as pd
+import tempfile
 
 from networksecurity.logging.logger import logging
 from networksecurity.exception.exception import NetworkSecurityException
@@ -26,6 +27,9 @@ from sklearn.ensemble import (
 )
 
 import mlflow
+import dagshub
+dagshub.init(repo_owner='Sam-Yak19', repo_name='NetworkSecurity_MLProject', mlflow=True)
+
 
 class ModelTrainer:
     def __init__(self,model_trainer_config:ModelTrainerConfig,data_transformation_artifact:DataTransformationArtifact):
@@ -44,7 +48,18 @@ class ModelTrainer:
             mlflow.log_metric("F1_Score",f1_score)
             mlflow.log_metric("Precision Score",precision_score)
             mlflow.log_metric("Recall Score",recall_score)
-            mlflow.sklearn.log_model(best_model,"model")
+            try:
+                # Create a temporary directory to save the model.
+                with tempfile.TemporaryDirectory() as tmpdir:
+                    model_path = os.path.join(tmpdir, "model")
+                    # Save the scikit-learn model to the temporary path.
+                    mlflow.sklearn.save_model(best_model, model_path)
+                    # Log the entire directory as an artifact.
+                    mlflow.log_artifacts(model_path, artifact_path="model")
+            except Exception as e:
+                    # Log the error but don't stop the run, just in case
+                    # it's a transient issue.
+                    logging.error(f"Failed to log model as artifact: {e}")
 
 
     def train_model(self,X_train,Y_train,X_test,Y_test):
@@ -118,6 +133,8 @@ class ModelTrainer:
 
         Network_Model=NetworkModel(preprocessor=preprocessor,model=best_model)
         save_object(self.model_trainer_config.trained_model_file_path,object=Network_Model)
+
+        save_object("final_model/model.pkl",best_model)
 
         ##Model Trainer Artifact
         model_trainer_artifact=ModelTrainerArtifact(trained_model_file_path=self.model_trainer_config.trained_model_file_path,
