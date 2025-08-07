@@ -1,234 +1,277 @@
-Network Security Project build using ML for Phising data
-This project implements an end-to-end Machine Learning pipeline for detecting anomalies in network security data. It's designed to be robust, reproducible, and easy to use, featuring data ingestion, validation, transformation, model training, and a user-friendly prediction API with a web interface.
+# 🛡️ Network Security ML Project
 
-✨ Features
-Data Ingestion: Securely fetches network data from a MongoDB database.
+An end-to-end Machine Learning pipeline for detecting anomalies in network security data using advanced ML techniques. This project focuses on phishing data detection and is designed to be robust, reproducible, and production-ready.
 
-Data Validation: Ensures data quality and consistency, checking for schema adherence and missing values.
+## 📋 Table of Contents
 
-Data Transformation: Preprocesses raw data, including handling missing values using KNNImputer, to prepare it for machine learning models.
+- [Features](#-features)
+- [Technologies Used](#️-technologies-used)
+- [Project Structure](#-project-structure)
+- [Setup and Installation](#-setup-and-installation)
+- [Usage](#-usage)
+- [MLflow Tracking](#-mlflow-tracking)
+- [Docker Deployment](#-docker-deployment)
+- [API Documentation](#-api-documentation)
+- [Troubleshooting](#-troubleshooting)
+- [Contributing](#-contributing)
+- [License](#-license)
 
-Model Training: Trains and evaluates various classification models (Random Forest, Decision Tree, Gradient Boosting, Logistic Regression, AdaBoost) to identify the best-performing model.
+## ✨ Features
 
-MLflow Tracking: Integrates with MLflow (via Dagshub) to log experiment parameters, metrics, and models, ensuring full reproducibility and easy comparison of different runs.
+- **🔍 Data Ingestion**: Securely fetches network data from MongoDB database
+- **✅ Data Validation**: Ensures data quality and consistency with schema validation
+- **🔄 Data Transformation**: Advanced preprocessing with KNNImputer for missing values
+- **🤖 Model Training**: Multiple ML algorithms (Random Forest, Decision Tree, Gradient Boosting, Logistic Regression, AdaBoost)
+- **📊 MLflow Integration**: Complete experiment tracking via Dagshub
+- **⚡ FastAPI Backend**: High-performance, asynchronous API for real-time predictions
+- **🌐 Web Interface**: User-friendly frontend for CSV upload and predictions
+- **🐳 Containerization**: Docker support for easy deployment
+- **📈 Model Comparison**: Automatic best model selection based on performance metrics
 
-Prediction API (FastAPI): Provides a high-performance, asynchronous API endpoint for real-time predictions on new network data.
+## 🛠️ Technologies Used
 
-User-Friendly Frontend: A simple web interface for users to upload CSV files and receive immediate predictions, complete with a sample data download option.
+| Category | Technologies |
+|----------|-------------|
+| **Core** | Python 3.8+, Pandas, NumPy |
+| **ML/AI** | Scikit-learn, MLflow, Dill |
+| **Web Framework** | FastAPI, Uvicorn, Jinja2Templates |
+| **Database** | MongoDB, PyMongo |
+| **Frontend** | HTML, Tailwind CSS, JavaScript |
+| **DevOps** | Docker, python-dotenv |
+| **Tracking** | Dagshub, MLflow |
 
-Containerization (Docker): Includes a Dockerfile for easy packaging and deployment of the application.
+## 📂 Project Structure
 
-🛠️ Technologies Used
-Python: Core programming language.
-
-Pandas: For data manipulation and analysis.
-
-NumPy: For numerical operations, especially with transformed data arrays.
-
-Scikit-learn: For machine learning algorithms (imputation, classification models).
-
-FastAPI: For building the high-performance web API.
-
-Uvicorn: An ASGI server to run the FastAPI application.
-
-MLflow: For MLOps lifecycle management (experiment tracking, model logging).
-
-Dagshub: A platform used for remote MLflow tracking and Git integration.
-
-PyMongo & Certifi: For connecting to MongoDB.
-
-python-dotenv: For managing environment variables securely.
-
-Dill: For serializing and deserializing Python objects (models, preprocessors).
-
-PyYAML: For working with YAML configuration files.
-
-Jinja2Templates: For rendering HTML responses in FastAPI.
-
-Tailwind CSS: For styling the frontend web application.
-
-Docker: For containerizing the application.
-
-📂 Project Structure
+```
 NetworkSystems/
-├── .github/
-├── .gitignore
-├── .env                  # Environment variables (e.g., MONGODB_URL_KEY)
-├── app.py                # FastAPI backend application
-├── main.py               # Main script to run the ML pipeline (for training)
-├── Dockerfile            # Docker configuration for containerization
-├── requirements.txt      # Python dependencies
-├── setup.py
-├── README.md             # This file
-├── final_model/          # Stores the trained NetworkModel (preprocessor + model)
-│   └── trained_model.pkl # Example: combined model after training
-├── prediction_output/    # Stores output CSVs from predictions
-├── networksecurity/      # Core Python package
+├── .github/                    # GitHub workflows and configurations
+├── .gitignore                 # Git ignore file
+├── .env                       # Environment variables (MongoDB URL)
+├── app.py                     # FastAPI backend application
+├── main.py                    # ML pipeline execution script
+├── Dockerfile                 # Docker configuration
+├── requirements.txt           # Python dependencies
+├── setup.py                   # Package setup configuration
+├── README.md                  # Project documentation
+│
+├── final_model/               # Trained model storage
+│   └── trained_model.pkl     # Serialized model artifact
+│
+├── prediction_output/         # Prediction results
+│   └── output.csv            # Generated predictions
+│
+├── networksecurity/           # Core Python package
 │   ├── __init__.py
-│   ├── constant/         # Constants for pipeline configurations
-│   ├── entity/           # Data models for artifacts and configurations
-│   ├── exception/        # Custom exception handling
-│   ├── logging/          # Custom logging setup
-│   ├── Pipelines/        # ML pipeline stages (e.g., training_pipeline.py)
-│   ├── components/       # Individual pipeline components (data_ingestion, data_validation, etc.)
-│   └── utils/            # Utility functions (load/save objects, numpy arrays, metrics)
-├── notebooks/            # Jupyter notebooks for exploration/development
-├── static/               # Frontend static files (HTML, CSS, JS)
-│   ├── index.html        # Main frontend application
-│   └── sample_network_data.csv # Sample CSV for user download
-└── templates/            # Jinja2 templates for FastAPI (e.g., table.html)
-    └── table.html
+│   ├── constant/             # Configuration constants
+│   ├── entity/               # Data models and configurations
+│   ├── exception/            # Custom exception handling
+│   ├── logging/              # Logging configuration
+│   ├── Pipelines/            # ML pipeline stages
+│   ├── components/           # Pipeline components
+│   └── utils/                # Utility functions
+│
+├── notebooks/                # Jupyter notebooks for EDA
+├── static/                   # Frontend static files
+│   ├── index.html           # Main web interface
+│   └── sample_network_data.csv # Sample data for testing
+│
+└── templates/                # Jinja2 templates
+    └── table.html           # Results display template
+```
 
+## 🚀 Setup and Installation
 
-🚀 Setup and Installation
-Follow these steps to get the project up and running on your local machine.
+### Prerequisites
 
-Prerequisites
-Python 3.8+: Ensure you have a compatible Python version installed.
+- **Python 3.8+** installed on your system
+- **Git** for version control
+- **MongoDB** connection (local or Atlas)
 
-Git: For cloning the repository.
+### 1. Clone the Repository
 
-1. Clone the Repository
+```bash
 git clone https://github.com/Sam-Yak19/NetworkSecurity_MLProject.git
 cd NetworkSecurity_MLProject
+```
 
+### 2. Create Virtual Environment
 
-2. Create and Activate Virtual Environment
-It's highly recommended to use a virtual environment to manage project dependencies.
-
-Windows:
-
+**Windows:**
+```bash
 python -m venv venv
 .\venv\Scripts\activate
+```
 
-
-macOS / Linux:
-
+**macOS/Linux:**
+```bash
 python3 -m venv venv
 source venv/bin/activate
+```
 
+### 3. Install Dependencies
 
-3. Install Dependencies
-Once your virtual environment is activated, install all required packages:
-
+```bash
 pip install -r requirements.txt
+```
 
+### 4. Environment Configuration
 
-4. Configure Environment Variables
-This project uses python-dotenv to load environment variables from a .env file.
+Create a `.env` file in the project root:
 
-Create a file named .env in the root directory of your project (same level as app.py).
+```env
+MONGODB_URL_KEY="mongodb+srv://username:password@cluster.mongodb.net/database?retryWrites=true&w=majority"
+```
 
-Add your MongoDB connection string to this file:
+> **Note:** Replace the placeholder values with your actual MongoDB connection details.
 
-MONGODB_URL_KEY="mongodb+srv://your_username:your_password@your_cluster.mongodb.net/your_database?retryWrites=true&w=majority"
+## 🏃 Usage
 
+### 1. Train the ML Model
 
-Replace your_username, your_password, your_cluster, and your_database with your actual MongoDB Atlas (or local MongoDB) connection details.
+Execute the complete training pipeline:
 
-🏃 Usage
-1. Training the Machine Learning Model
-To train the model and save the trained NetworkModel (preprocessor + model) artifact, run the main.py script:
-
+```bash
 python main.py
+```
 
+This process includes:
+- 📥 Data ingestion from MongoDB
+- ✅ Data validation and quality checks
+- 🔄 Data transformation and preprocessing  
+- 🤖 Model training with multiple algorithms
+- 💾 Best model selection and saving
+- 📊 MLflow experiment logging
 
-This will execute the entire training pipeline:
+### 2. Start the API Server
 
-Data Ingestion from MongoDB.
+Launch the FastAPI backend:
 
-Data Validation.
-
-Data Transformation (including KNN imputation).
-
-Model Training and evaluation.
-
-The best model will be saved to the final_model/ directory (e.g., final_model/trained_model.pkl).
-
-MLflow metrics and artifacts will be logged to your Dagshub repository.
-
-2. Running the Prediction API (FastAPI Backend)
-To start the web server that hosts your prediction API:
-
+```bash
 uvicorn app:app --reload
+```
 
+The API will be available at: `http://127.0.0.1:8000`
 
-The --reload flag is useful during development as it automatically restarts the server when code changes are detected.
+### 3. Use the Web Interface
 
-The API will be available at http://127.0.0.1:8000.
+1. **Access the Application**: Navigate to `http://127.0.0.1:8000/`
+2. **Download Sample Data**: Click "Download Sample CSV" for test data
+3. **Upload Your CSV**: Drag and drop or click to upload your network data
+4. **Get Predictions**: Click "Get Prediction" to analyze your data
+5. **View Results**: Results display in an HTML table and save to `prediction_output/output.csv`
 
-3. Using the Frontend Application
-Once the FastAPI backend is running:
+## 📊 MLflow Tracking
 
-Open your web browser and navigate to http://127.0.0.1:8000/.
+Track your experiments and model performance:
 
-You will see the Network Security Prediction web interface.
+1. **Access Dagshub**: Visit [https://dagshub.com/Sam-Yak19/NetworkSecurity_MLProject](https://dagshub.com/Sam-Yak19/NetworkSecurity_MLProject)
+2. **Navigate to MLflow**: Click the "MLflow" tab in your repository
+3. **Explore Runs**: Compare different training runs, parameters, and metrics
+4. **Model Artifacts**: Access saved models and preprocessing pipelines
 
-To make a prediction:
+### Tracked Metrics
+- F1-Score (Training & Test)
+- Precision (Training & Test)  
+- Recall (Training & Test)
+- Model Parameters
+- Data Transformation Steps
 
-Download Sample CSV: If you don't have your own data, click the "Download Sample CSV" button to get a sample_network_data.csv file. This file demonstrates the expected input format.
+## 🐳 Docker Deployment
 
-Upload CSV: Click the "Click to upload" area or drag and drop your CSV file (either your own or the downloaded sample).
+### Build Docker Image
 
-Get Prediction: Click the "Get Prediction" button.
-
-The application will send your CSV to the backend, process it, and display the prediction results (including a new predicted_column) directly on the web page as an HTML table. The predicted data will also be saved as prediction_output/output.csv.
-
-📊 MLflow Tracking
-This project is configured to track experiments using MLflow, integrated with Dagshub.
-
-Access Dagshub: Go to your Dagshub repository: https://dagshub.com/Sam-Yak19/NetworkSecurity_MLProject
-
-Navigate to MLflow: On the Dagshub repository page, find the "MLflow" tab or section.
-
-Explore Runs: Here, you can see all your training runs, their logged parameters, metrics (F1-Score, Precision, Recall for both training and test sets), and the saved model artifacts. This helps you compare different model versions and understand their performance.
-
-🐳 Deployment
-The project includes a Dockerfile for easy containerization, which is the first step towards deploying your application to cloud platforms.
-
-To build the Docker image:
-
+```bash
 docker build -t network-security-app .
+```
 
+### Run Container
 
-After building, you can run the container:
-
+```bash
 docker run -p 8000:8000 network-security-app
+```
+
+The application will be accessible at `http://localhost:8000`
+
+### Production Deployment Options
+- **Google Cloud Run**
+- **AWS Elastic Beanstalk**
+- **Azure App Service**
+- **Heroku**
+
+## 📖 API Documentation
+
+Once the server is running, access the interactive API documentation:
+
+- **Swagger UI**: `http://127.0.0.1:8000/docs`
+- **ReDoc**: `http://127.0.0.1:8000/redoc`
+
+### Key Endpoints
+
+| Endpoint | Method | Description |
+|----------|---------|-------------|
+| `/` | GET | Web interface homepage |
+| `/predict` | POST | Upload CSV and get predictions |
+| `/download-sample` | GET | Download sample CSV file |
+
+## 🐛 Troubleshooting
+
+### Common Issues and Solutions
+
+**1. Form data requires "python-multipart"**
+```bash
+pip install python-multipart
+```
+
+**2. Cannot save file into non-existent directory**
+- Ensure the `prediction_output/` directory exists
+- The application should create it automatically
+
+**3. Model file does not exist**
+```bash
+python main.py  # Train the model first
+```
+
+**4. MLflow connection errors**
+- Check your Dagshub credentials
+- Verify network connectivity
+- Ensure MLflow tracking URI is correct
+
+**5. MongoDB connection issues**
+- Verify your `.env` file configuration
+- Check MongoDB Atlas whitelist settings
+- Test connection string separately
+
+## 📈 Model Performance
+
+The system evaluates multiple algorithms and automatically selects the best performer:
+
+- **Random Forest**: Ensemble method for robust predictions
+- **Decision Tree**: Interpretable tree-based model  
+- **Gradient Boosting**: Sequential weak learner improvement
+- **Logistic Regression**: Linear probabilistic classifier
+- **AdaBoost**: Adaptive boosting ensemble
+
+## 🔒 Security Considerations
+
+- Environment variables for sensitive data
+- Input validation for uploaded files
+- Secure MongoDB connections
+- Docker containerization for isolation
 
 
-This will run your FastAPI application inside a Docker container, accessible on port 8000 of your host machine. For production deployment, consider platforms like Google Cloud Run, AWS Elastic Beanstalk, or Azure App Service.
+## 🙏 Acknowledgments
 
-🐛 Troubleshooting
-RuntimeError: Form data requires "python-multipart" to be installed.:
+- **MLflow** for experiment tracking
+- **Dagshub** for MLOps platform
+- **FastAPI** for the high-performance web framework
+- **Scikit-learn** for machine learning algorithms
 
-Solution: Activate your virtual environment and run pip install python-multipart.
+---
 
-OSError: Cannot save file into a non-existent directory: 'prediction_output':
+<div align="center">
 
-Solution: The app.py code should automatically create this directory. If not, ensure you're using the latest app.py version or manually create the prediction_output folder in your project root.
+**[⭐ Star this repository](https://github.com/Sam-Yak19/NetworkSecurity_MLProject)** if you find it helpful!
 
-The file final_model/trained_model.pkl does not exists:
+Made with ❤️ for the cybersecurity community
 
-Solution: This means the training pipeline (python main.py) has not been run successfully, or the path in app.py to load the model is incorrect. Run python main.py first, and verify the trained_network_model_path in app.py matches where main.py saves the model.
-
-mlflow.exceptions.RestException: INTERNAL_ERROR: Response: {'error': 'unsupported endpoint, please contact support@dagshub.com'}:
-
-Solution: This was addressed by modifying ModelTrainer.track_ml_flow to use mlflow.sklearn.save_model followed by mlflow.log_artifacts instead of direct mlflow.sklearn.log_model. Ensure you have the latest ModelTrainer code.
-
-👋 Contributing
-Contributions are welcome! If you have suggestions for improvements, bug fixes, or new features, please feel free to:
-
-Fork the repository.
-
-Create a new branch (git checkout -b feature/your-feature-name).
-
-Make your changes.
-
-Commit your changes (git commit -m 'Add new feature').
-
-Push to the branch (git push origin feature/your-feature-name).
-
-Open a Pull Request.
-
-📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
+</div>
