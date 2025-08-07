@@ -1,6 +1,4 @@
-### Network Security Project build using ML for Phising data
-
-🛡️ Network Security Anomaly Detection ML Project
+Network Security Project build using ML for Phising data
 This project implements an end-to-end Machine Learning pipeline for detecting anomalies in network security data. It's designed to be robust, reproducible, and easy to use, featuring data ingestion, validation, transformation, model training, and a user-friendly prediction API with a web interface.
 
 ✨ Features
@@ -81,6 +79,7 @@ NetworkSystems/
 └── templates/            # Jinja2 templates for FastAPI (e.g., table.html)
     └── table.html
 
+
 🚀 Setup and Installation
 Follow these steps to get the project up and running on your local machine.
 
@@ -93,6 +92,7 @@ Git: For cloning the repository.
 git clone https://github.com/Sam-Yak19/NetworkSecurity_MLProject.git
 cd NetworkSecurity_MLProject
 
+
 2. Create and Activate Virtual Environment
 It's highly recommended to use a virtual environment to manage project dependencies.
 
@@ -101,15 +101,18 @@ Windows:
 python -m venv venv
 .\venv\Scripts\activate
 
+
 macOS / Linux:
 
 python3 -m venv venv
 source venv/bin/activate
 
+
 3. Install Dependencies
 Once your virtual environment is activated, install all required packages:
 
 pip install -r requirements.txt
+
 
 4. Configure Environment Variables
 This project uses python-dotenv to load environment variables from a .env file.
@@ -120,6 +123,7 @@ Add your MongoDB connection string to this file:
 
 MONGODB_URL_KEY="mongodb+srv://your_username:your_password@your_cluster.mongodb.net/your_database?retryWrites=true&w=majority"
 
+
 Replace your_username, your_password, your_cluster, and your_database with your actual MongoDB Atlas (or local MongoDB) connection details.
 
 🏃 Usage
@@ -127,6 +131,7 @@ Replace your_username, your_password, your_cluster, and your_database with your 
 To train the model and save the trained NetworkModel (preprocessor + model) artifact, run the main.py script:
 
 python main.py
+
 
 This will execute the entire training pipeline:
 
@@ -146,6 +151,7 @@ MLflow metrics and artifacts will be logged to your Dagshub repository.
 To start the web server that hosts your prediction API:
 
 uvicorn app:app --reload
+
 
 The --reload flag is useful during development as it automatically restarts the server when code changes are detected.
 
@@ -184,9 +190,11 @@ To build the Docker image:
 
 docker build -t network-security-app .
 
+
 After building, you can run the container:
 
 docker run -p 8000:8000 network-security-app
+
 
 This will run your FastAPI application inside a Docker container, accessible on port 8000 of your host machine. For production deployment, consider platforms like Google Cloud Run, AWS Elastic Beanstalk, or Azure App Service.
 
